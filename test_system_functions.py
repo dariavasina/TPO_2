@@ -1,6 +1,6 @@
 import math
 import pytest
-from system_functions import sin_taylor, cos_taylor, ln_taylor, log_base, system_function, generate_csv
+from functions import sin_taylor, cos_taylor, ln_taylor, log_base, system_function, generate_csv
 
 def test_sin_taylor():
     for x in [-math.pi, -math.pi/2, 0, math.pi/2, math.pi]:
