@@ -67,26 +67,14 @@ def system_function(x, eps=EPSILON):
     if x <= 0:
         sin_val = sin_taylor(x, eps)
         cos_val = cos_taylor(x, eps)
-        # Вычисляем ((((sin(x)*cos(x))^3)^2 * cos(x))^2)
-        part1 = (sin_val * cos_val) ** 3
-        part2 = part1 ** 2
-        part3 = part2 * cos_val
-        result = part3 ** 2
-        return result
+        return ((((sin_val * cos_val) ** 3) ** 2) * cos_val) ** 2
     else:
         ln_val = ln_taylor(x, eps)
         log2_val = log_base(x, 2, eps)
         log10_val = log_base(x, 10, eps)
         log3_val = log_base(x, 3, eps)
         log5_val = log_base(x, 5, eps)
-        # Вычисляем (((((log2 - ln)*log10)/log10) - log2) / (log3*log5))
-        temp1 = log2_val - ln_val
-        temp2 = temp1 * log10_val
-        temp3 = temp2 / log10_val  # Деление допустимо, т.к. x>0 (за исключением x=1, где log10(1)=0)
-        temp4 = temp3 - log2_val
-        denominator = log3_val * log5_val
-        result = temp4 / denominator
-        return result
+        return (((log2_val - ln_val) * log10_val) / log10_val - log2_val) / (log3_val * log5_val)
 
 def generate_csv(start, end, step, filename, eps=EPSILON):
     """
