@@ -1,10 +1,8 @@
 import pytest
 import math
-
 from math import isclose
 from math import e as E
 from functions.logarithms import ln_taylor, log_base
-from unittest.mock import patch
 
 EPSILON = 1e-10
 
@@ -20,9 +18,7 @@ EPSILON = 1e-10
 )
 def test_ln_taylor(x, expected):
     result = ln_taylor(x)
-    assert isclose(
-        result, expected, abs_tol=EPSILON
-    ), f"Expected {expected}, got {result}"
+    assert isclose(result, expected, abs_tol=EPSILON), f"Expected {expected}, got {result}"
 
 
 @pytest.mark.parametrize(
@@ -48,9 +44,7 @@ def test_ln_taylor_invalid_input(x):
 )
 def test_log_base(x, base, expected):
     result = log_base(x, base)
-    assert isclose(
-        result, expected, abs_tol=EPSILON
-    ), f"Expected {expected}, got {result}"
+    assert isclose(result, expected, abs_tol=EPSILON), f"Expected {expected}, got {result}"
 
 
 @pytest.mark.parametrize(
@@ -74,16 +68,16 @@ def test_log_base_invalid_input(x, base):
         (16, 2, 4, {16: math.log(16), 2: math.log(2)}),
     ],
 )
-def test_log2_with_mock_ln(x, base, expected, mock_values):
-    with patch("functions.logarithms.ln_taylor") as mock_ln:
-        mock_ln.side_effect = lambda x, eps=EPSILON: mock_values.get(x, 0)
+def test_log2_with_mock_ln(x, base, expected, mock_values, mocker):
+    mock_ln = mocker.patch("functions.logarithms.ln_taylor")
+    mock_ln.side_effect = lambda x, eps=EPSILON: mock_values.get(x, 0)
 
-        result = log_base(x, base)
-        assert isclose(result, expected, abs_tol=EPSILON)
+    result = log_base(x, base)
+    assert isclose(result, expected, abs_tol=EPSILON)
 
-        assert mock_ln.call_count == 2
-        mock_ln.assert_any_call(x, EPSILON)
-        mock_ln.assert_any_call(base, EPSILON)
+    assert mock_ln.call_count == 2
+    mock_ln.assert_any_call(x, EPSILON)
+    mock_ln.assert_any_call(base, EPSILON)
 
 
 @pytest.mark.parametrize(
@@ -93,14 +87,13 @@ def test_log2_with_mock_ln(x, base, expected, mock_values):
         (1000, 10, 3, {1000: math.log(1000), 10: math.log(10)}),
     ],
 )
-def test_log10_with_mock_ln(x, base, expected, mock_values):
-    with patch("functions.logarithms.ln_taylor") as mock_ln:
-        mock_ln.side_effect = lambda x, eps=EPSILON: mock_values.get(x, 0)
+def test_log10_with_mock_ln(x, base, expected, mock_values, mocker):
+    mock_ln = mocker.patch("functions.logarithms.ln_taylor")
+    mock_ln.side_effect = lambda x, eps=EPSILON: mock_values.get(x, 0)
 
-        result = log_base(x, base)
+    result = log_base(x, base)
 
-        assert isclose(result, expected, abs_tol=EPSILON)
-
-        assert mock_ln.call_count == 2
-        mock_ln.assert_any_call(x, EPSILON)
-        mock_ln.assert_any_call(base, EPSILON)
+    assert isclose(result, expected, abs_tol=EPSILON)
+    assert mock_ln.call_count == 2
+    mock_ln.assert_any_call(x, EPSILON)
+    mock_ln.assert_any_call(base, EPSILON)

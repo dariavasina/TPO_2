@@ -1,7 +1,6 @@
 import pytest
 from math import isclose
 from functions.system_function import system_function
-from unittest.mock import patch
 
 EPSILON = 1e-3
 

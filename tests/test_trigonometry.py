@@ -2,7 +2,7 @@ import pytest
 from math import pi as PI
 from math import sin, cos, isclose
 from functions.trigonometry import sin_taylor, cos_taylor
-from unittest.mock import patch
+
 
 EPSILON = 1e-10
 
@@ -54,17 +54,16 @@ def test_cos_taylor(x, expected):
         (3, cos(3), sin(PI / 2 - 3)),
     ],
 )
-def test_cos_with_mock(x, expected, sin_value):
-    with patch("functions.trigonometry.sin_taylor") as mock_sin:
-        mock_sin.return_value = sin_value
+def test_cos_with_mock(mocker, x, expected, sin_value):
+    mock_sin = mocker.patch("functions.trigonometry.sin_taylor", return_value=sin_value)
 
-        result = cos_taylor(x)
+    result = cos_taylor(x)
 
-        assert isclose(result, expected, abs_tol=EPSILON)
+    assert isclose(result, expected, abs_tol=EPSILON)
 
-        mock_sin.assert_called_once()
-        call_arg = mock_sin.call_args[0][0]  # Get the first positional argument
-        assert isclose(call_arg, PI / 2 - x, abs_tol=EPSILON)
+    mock_sin.assert_called_once()
+    call_arg = mock_sin.call_args[0][0]
+    assert isclose(call_arg, PI / 2 - x, abs_tol=EPSILON)
 
 
 @pytest.mark.parametrize(
