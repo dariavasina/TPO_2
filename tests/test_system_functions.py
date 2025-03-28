@@ -20,19 +20,13 @@ EPSILON = 1e-3
 )
 def test_system_function_values(x, expected):
     result = system_function(x)
-    assert isclose(result, expected, abs_tol=EPSILON), f"For x={x}, expected {expected}, got {result}"
+    assert isclose(
+        result, expected, abs_tol=EPSILON
+    ), f"For x={x}, expected {expected}, got {result}"
 
 
-@pytest.mark.parametrize(
-    "invalid_input",
-    [
-        1,  # division by zero
-        "aaaa"
-    ]
-)
+@pytest.mark.parametrize("invalid_input", [1, "aaaa"])  # division by zero
 def test_system_function_invalid_input(invalid_input):
     """Test that system_function raises ValueError for invalid inputs"""
     with pytest.raises(Exception):
         system_function(invalid_input)
-
-

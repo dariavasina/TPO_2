@@ -78,7 +78,7 @@ def test_cos_with_mock(x, expected, sin_value):
         3.0,
     ],
 )
-def test_sin_taylor_accuracy(x):
+def test_taylor_accuracy(x):
     result_sin = sin_taylor(x)
     expected_sin = sin(x)
     assert isclose(
